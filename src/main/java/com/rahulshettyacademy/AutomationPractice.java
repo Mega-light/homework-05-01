@@ -55,19 +55,32 @@ public class AutomationPractice {
         System.out.println();
         runTabs(driver);
         System.out.println();
-        driver.quit();
     }
 
     private void runTabs(@NotNull WebDriver driver) {
+//        5- Tabs: Repeat below instructions until you have 9 open Tabs in browser
 //        a) Select "Open Tab" button
 //        b) Switch back to parent tab - Switch must be done using “SwitchTo()”
 //        c) Print the current number of tabs
-        WebElement opentab = driver.findElement(By.id("opentab"));
-        opentab.click();
-        Set<String> windowHandles = driver.getWindowHandles();
-        Iterator<String> iterator = windowHandles.iterator();
-        driver.switchTo().window(iterator.next());
-        System.out.println("Number of tabs: " + windowHandles.size());
+        int tabsToReach = 9;
+        String parentWindowHandleTab = driver.getWindowHandle();
+        for (int i = 1; i < tabsToReach; i++) {
+            WebElement opentab = driver.findElement(By.id("opentab"));
+            opentab.click();
+            Set<String> windowHandles = driver.getWindowHandles();
+            driver.switchTo().window(parentWindowHandleTab);
+            System.out.println("Number of tabs: " + windowHandles.size());
+        }
+
+        System.out.println("-------------------------------------------------------------------------");
+
+        // Close tabs
+        for (String windowHandle : driver.getWindowHandles()) {
+            System.out.println("Closing " + windowHandle + " window.");
+            driver.switchTo().window(windowHandle);
+            driver.close();
+        }
+
     }
 
     private void runButtons(@NotNull WebDriver driver) {
